@@ -7,8 +7,12 @@ apply plugin: 'maven-publish'
 afterEvaluate {
     publishing {
         publications {
+            // Creates a Maven publication called "release".
             release(MavenPublication) {
                 from components.release
+                groupId = 'com.github.btech16'
+                artifactId = 'btech-utils'
+                version = '1.0'
             }
         }
     }
