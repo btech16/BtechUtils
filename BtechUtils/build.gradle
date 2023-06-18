@@ -4,9 +4,20 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 apply plugin: 'maven-publish'
 
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
+}
+
 android {
     namespace 'com.rhdev.btechutils'
     compileSdk 34
+    buildToolsVersion '34.0.0 rc4'
 
     defaultConfig {
         minSdk 22
@@ -48,17 +59,6 @@ dependencies {
 
 
 }
-
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = 'com.github.btech16'
-                artifactId = 'btech-utils'
-                version = '1.0'
-            }
-        }
-    }
+tasks.withType(Javadoc).all {
+    enabled = false
 }
