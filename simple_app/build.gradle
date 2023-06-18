@@ -3,9 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+
 android {
     namespace 'com.rhdev.utilslibrary'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.rhdev.utilslibrary"

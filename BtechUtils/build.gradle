@@ -4,25 +4,14 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 apply plugin: 'maven-publish'
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-            }
-        }
-    }
-}
-
 android {
     namespace 'com.rhdev.btechutils'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 22
-        targetSdk 33
+        targetSdk 34
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -33,22 +22,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
 //    Toasty
     implementation 'com.github.GrenderG:Toasty:1.5.2'
@@ -62,4 +47,18 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.2.0'
 
 
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.btech16'
+                artifactId = 'btech-utils'
+                version = '1.0'
+            }
+        }
+    }
 }
