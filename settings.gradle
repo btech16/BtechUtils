@@ -1,0 +1,3 @@
+rootProject.name = "UtilsLibrary"
+include ':simple_app'
+include ':BtechUtils'
