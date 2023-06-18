@@ -7,112 +7,124 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object DarkMode {
-
     private val TAG = "P_TAG : " + DarkMode::class.simpleName
     private const val APP_DARK_MODE_SP_KEY = "app_dark_mode_sp_key"
 
-    private val uiModeMap = mapOf(
-        "نهاري" to AppCompatDelegate.MODE_NIGHT_NO,
-        "ليلي" to AppCompatDelegate.MODE_NIGHT_YES,
-        "تلقائي" to AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-    )
+    private lateinit var appContext: Context
+    lateinit var modesList: List<Mode>
+        private set
 
+    // ...
 
-    private fun setAppDarkModeValue(context: Context, mode: Int) {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPreferences.edit().putInt(APP_DARK_MODE_SP_KEY, mode).apply()
+    fun initialize(context: Context) {
+        appContext = context.applicationContext
+        initModesList()
     }
 
-    private fun getAppDarkModeValue(context: Context): Int {
-        val sharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(context)
-        return sharedPreferences.getInt(
-            APP_DARK_MODE_SP_KEY,
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    private fun initModesList() {
+        modesList = listOf(
+            Mode(appContext.resources.getString(R.string.light), Type.LIGHT),
+            Mode(appContext.resources.getString(R.string.night), Type.NIGHT),
+            Mode(appContext.resources.getString(R.string.system), Type.SYSTEM)
         )
     }
 
-    fun applyAppModeToUI(context: Context) {
-        AppCompatDelegate.setDefaultNightMode(getAppDarkModeValue(context))
+    fun changeMode(type: Type) {
+        setAppDarkModeValue(type)
+        applyAppModeToUI()
     }
 
-    private fun applyAppModeToUI(mode: Int) {
-        AppCompatDelegate.setDefaultNightMode(mode)
+    private fun setAppDarkModeValue(type: Type) {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext)
+        sharedPreferences.edit().putString(APP_DARK_MODE_SP_KEY, type.value).apply()
+    }
+
+    fun getCurrentModePosition(): Int {
+        modesList.forEachIndexed { index, mode ->
+            if (mode.type == getCurrentModeType()) {
+                return index
+            }
+        }
+        return -1
+    }
+
+    private fun getCurrentModeDelegate(): Int {
+        return getModeDelegateByType(getCurrentModeType())
+    }
+
+    private fun getModeDelegateByType(type: Type): Int {
+        return when (type) {
+            Type.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+            Type.NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
+            Type.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+    }
+
+    private fun getCurrentModeType(): Type {
+        val appDarkModeValue = getCurrentModeValue()
+        return getTypeByValue(appDarkModeValue)
+    }
+
+    private fun getTypeByValue(value: String): Type {
+        return Type.values().find { it.value == value } ?: Type.SYSTEM
+    }
+
+    private fun getCurrentModeValue(): String {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext)
+        return sharedPreferences.getString(APP_DARK_MODE_SP_KEY, Type.SYSTEM.value)
+            ?: Type.SYSTEM.value
+    }
+
+    private fun applyAppModeToUI() {
+        applyAppModeToUI(getCurrentModeType())
+    }
+
+    private fun applyAppModeToUI(type: Type) {
+        AppCompatDelegate.setDefaultNightMode(getModeDelegateByType(type))
     }
 
     // Function to check if the current theme is dark
-    fun isDarkTheme(context: Context): Boolean {
-        return when (getAppDarkModeValue(context)) {
+    fun isDarkTheme(): Boolean {
+        return when (getCurrentModeDelegate()) {
             AppCompatDelegate.MODE_NIGHT_YES -> true
             AppCompatDelegate.MODE_NIGHT_NO -> false
             else -> {
                 val currentNightMode =
-                    context.applicationContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    appContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                 currentNightMode == Configuration.UI_MODE_NIGHT_YES
             }
         }
     }
 
     fun showUiModeDialog(context: Context) {
-
-        val currentSelectedMode = getPositionByValue(getAppDarkModeValue(context))
+        val currentSelectedMode = getCurrentModePosition()
         var checkedItem = currentSelectedMode
+        val items = modesList.map { it.title }.toTypedArray()
 
         MaterialAlertDialogBuilder(context)
             .setTitle("اختيار المظهر")
-            .setSingleChoiceItems(uiModeMap.keys.toTypedArray(), checkedItem) { _, which ->
+            .setSingleChoiceItems(items, checkedItem) { _, which ->
                 checkedItem = which
             }
             .setNeutralButton("موافق") { _, _ ->
                 if (currentSelectedMode != checkedItem) {
-                    val selectedMode = getValueByPosition(checkedItem)
-                    setAppDarkModeValue(context, selectedMode)
-                    applyAppModeToUI(context)
+                    val selectedMode = modesList[checkedItem]
+                    changeMode(selectedMode.type)
                 }
             }
             .setPositiveButton("الغاء") { _, _ ->
-
             }
-
             .show()
     }
 
-    private fun getValueByPosition(position: Int): Int {
-        uiModeMap.values.toIntArray().forEachIndexed { index, i ->
-            if (index == position) {
-                return i
-            }
-        }
-        return -1
-    }
+    data class Mode(
+        var title: String,
+        var type: Type,
+    )
 
-    private fun getKeyByPosition(position: Int): String {
-        uiModeMap.keys.toTypedArray().forEachIndexed { index, i ->
-            if (index == position) {
-                return i
-            }
-        }
-        return ""
+    enum class Type(var value: String) {
+        LIGHT("light"),
+        NIGHT("night"),
+        SYSTEM("system")
     }
-
-    private fun getPositionByValue(value: Int): Int {
-        uiModeMap.values.forEachIndexed { index, i ->
-            if (value == i) {
-                return index
-            }
-        }
-        return -1
-    }
-
-    private fun getPositionByKey(map: Map<String, Int>, key: String): Int {
-        map.keys.forEachIndexed { index, i ->
-            if (key == i) {
-                return index
-            }
-        }
-        return -1
-    }
-
 }
-
-

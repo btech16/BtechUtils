@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="light">نهاري</string>
+    <string name="night">ليلي</string>
+    <string name="auto">تلقائي</string>
+    <string name="system">النظام</string>
+</resources>

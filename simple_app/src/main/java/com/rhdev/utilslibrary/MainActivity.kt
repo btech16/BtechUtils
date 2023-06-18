@@ -3,7 +3,11 @@ package com.rhdev.utilslibrary
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rhdev.btechutils.DarkMode
+import com.rhdev.btechutils.DarkMode.changeMode
+import com.rhdev.btechutils.DarkMode.getCurrentModePosition
+import com.rhdev.btechutils.DarkMode.modesList
 import com.rhdev.btechutils.StoreUtils
 import com.rhdev.btechutils.ToastyType
 import com.rhdev.btechutils.ToastyUtils
@@ -12,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        DarkMode.initialize(context = this@MainActivity)
 
         isDarkModeToasty()
 
@@ -22,7 +28,33 @@ class MainActivity : AppCompatActivity() {
         val checkUpdatesButton = findViewById<Button>(R.id.checkUpdates)
 
         nightButton.setOnClickListener {
-            DarkMode.showUiModeDialog(context = this@MainActivity)
+            DarkMode.showUiModeDialog(this@MainActivity)
+        }
+
+        nightButton.setOnLongClickListener {
+            val currentSelectedMode = getCurrentModePosition()
+            var checkedItem = currentSelectedMode
+
+            val items = modesList.map { it.title }.toTypedArray()
+
+            MaterialAlertDialogBuilder(this@MainActivity)
+                .setTitle("اختيار المظهر")
+                .setSingleChoiceItems(items, checkedItem) { _, which ->
+                    checkedItem = which
+                }
+                .setNeutralButton("موافق") { _, _ ->
+                    if (currentSelectedMode != checkedItem) {
+                        val selectedMode = modesList[checkedItem]
+                        changeMode(selectedMode.type)
+                    }
+                }
+                .setPositiveButton("الغاء") { _, _ ->
+
+                }
+
+                .show()
+
+            true
         }
 
         devPageButton.setOnClickListener {
@@ -59,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         ToastyUtils.show(
             context = this@MainActivity,
             toastyType = ToastyType.INFO,
-            text = if (DarkMode.isDarkTheme(context = this@MainActivity)) "is night mode" else "is light mode")
+            text = if (DarkMode.isDarkTheme()) "is night mode" else "is light mode")
     }
 
 
