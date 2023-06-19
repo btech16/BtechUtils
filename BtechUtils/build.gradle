@@ -11,7 +11,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.github.btech16'
-                artifactId = 'btech-utils'
+                artifactId = 'btech_utils'
                 version = '1.0'
             }
         }
