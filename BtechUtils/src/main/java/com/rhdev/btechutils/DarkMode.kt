@@ -7,7 +7,6 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object DarkMode {
-    private val TAG = "P_TAG : " + DarkMode::class.simpleName
     private const val APP_DARK_MODE_SP_KEY = "app_dark_mode_sp_key"
 
     private lateinit var appContext: Context
@@ -16,9 +15,12 @@ object DarkMode {
 
     // ...
 
-    fun initialize(context: Context) {
+    fun initialize(context: Context , applyTheme:Boolean) {
         appContext = context.applicationContext
         initModesList()
+        if (applyTheme) {
+            applyAppModeToUI()
+        }
     }
 
     private fun initModesList() {
@@ -60,7 +62,7 @@ object DarkMode {
         }
     }
 
-    private fun getCurrentModeType(): Type {
+    fun getCurrentModeType(): Type {
         val appDarkModeValue = getCurrentModeValue()
         return getTypeByValue(appDarkModeValue)
     }
