@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        DarkMode.initialize(context = this@MainActivity)
+        DarkMode.initialize(context = this@MainActivity , true)
 
         isDarkModeToasty()
 

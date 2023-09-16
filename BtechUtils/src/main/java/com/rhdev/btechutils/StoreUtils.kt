@@ -15,12 +15,13 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 
 object StoreUtils {
 
+    val GOOGLE_PLAY_DEV_URL = "https://play.google.com/store/apps/dev?id=6736668226615202750"
     private val TAG = "BtechUtils : " + StoreUtils::class.simpleName
 
     fun openDevGooglePlayAccount(context: Context) {
         val applicationContext = context.applicationContext
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("https://play.google.com/store/apps/dev?id=6736668226615202750")
+            data = Uri.parse(GOOGLE_PLAY_DEV_URL)
             setPackage("com.android.vending")
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
@@ -34,17 +35,21 @@ object StoreUtils {
         val appUpdateInfoTask: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
 
         val currentVersionCode = getAppVersionCode(applicationContext)
-
         Log.v(TAG, "checkAppUpdate: currentVersionCode = $currentVersionCode")
 
         appUpdateInfoTask
             .addOnSuccessListener { appUpdateInfo ->
+
                 Log.v(
                     TAG,
-                    "onSuccess() called with: availableVersionCode = [" + appUpdateInfo?.availableVersionCode() + "]"
+                    "onSuccess() called with: appUpdateInfo = $appUpdateInfo"
                 )
+
                 appUpdateInfo?.let {
                     val availableVersionCode = appUpdateInfo.availableVersionCode()
+                    val updateAvailability = appUpdateInfo.updateAvailability()
+                    Log.v(TAG, "checkAppUpdate() called availableVersionCode = $availableVersionCode")
+                    Log.v(TAG, "checkAppUpdate() called updateAvailability = $updateAvailability")
 
                     callback((currentVersionCode > -1 && availableVersionCode > currentVersionCode))
 
@@ -57,10 +62,10 @@ object StoreUtils {
                 Log.w(TAG, "checkAppUpdate() addOnFailureListener called", exception)
             }
             .addOnCompleteListener { task ->
-                Log.d(TAG, "checkAppUpdate() addOnCompleteListener called with: task = $task")
+                Log.v(TAG, "checkAppUpdate() addOnCompleteListener called with: task = $task")
             }
             .addOnCanceledListener {
-                Log.d(TAG, "checkAppUpdate() addOnCanceledListener called")
+                Log.v(TAG, "checkAppUpdate() addOnCanceledListener called")
             }
     }
 
@@ -75,7 +80,6 @@ object StoreUtils {
                     PackageManager.PackageInfoFlags.of(GET_META_DATA.toLong() or PackageManager.GET_ACTIVITIES.toLong())
                 )
             } else {
-                @Suppress("DEPRECATION")
                 packageManager.getPackageInfo(
                     packageName,
                     PackageManager.GET_ACTIVITIES
