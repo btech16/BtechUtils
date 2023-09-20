@@ -48,7 +48,7 @@ fun RahbaCompose() {
 
             SocialIcon(
                 icon = painterResource(id = R.drawable.site_svgrepo_com),
-                url = "https://rahbadev.github.io/portfolio/",
+                url = "https://rahbadev.github.io/",
                 color = Color(0xFF3b3537)
             )
 
