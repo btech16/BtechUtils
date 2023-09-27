@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_gravity="center"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <Button
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/dev_page"
+        android:id="@+id/dev_page_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Open Dev Page"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/checkUpdates"
+        android:id="@+id/check_updates_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Check Updates"
@@ -48,6 +48,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:text="Toasty Test"
+        android:textAppearance="?textAppearanceTitleMedium" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/toasty_chips"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="6dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/error_toasty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Error" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/info_toasty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Info" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/success_toasty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Success" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/normal_toasty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Normal" />
+                <com.google.android.material.chip.Chip
+            android:id="@+id/warning_toasty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warning" />
+
+    </com.google.android.material.chip.ChipGroup>
 
 
 </LinearLayout>

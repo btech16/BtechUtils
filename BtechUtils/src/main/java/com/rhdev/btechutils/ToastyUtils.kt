@@ -1,28 +1,47 @@
 package com.rhdev.btechutils
 
 import android.content.Context
+import androidx.annotation.StringRes
 import es.dmoral.toasty.Toasty
 
 
-object ToastyUtils {
-
-    fun show(context : Context, toastyType: ToastyType, resId:Int) {
-        show(context , toastyType , context.getString(resId))
-    }
-
-    fun show(context : Context,toastyType: ToastyType, text: String) {
-        when (toastyType) {
-            ToastyType.ERROR -> Toasty.error(context , text , Toasty.LENGTH_LONG , true).show()
-            ToastyType.INFO -> Toasty.info(context, text , Toasty.LENGTH_LONG , true).show()
-            ToastyType.SUCCESS -> Toasty.success(context, text , Toasty.LENGTH_LONG , true).show()
-            ToastyType.WARNING -> Toasty.warning(context, text , Toasty.LENGTH_LONG , true).show()
-            ToastyType.NORMAL -> Toasty.normal(context, text , Toasty.LENGTH_LONG ,null, true).show()
-        }
-    }
-
-
+fun show(
+    context: Context,
+    toastyType: ToastyType,
+    @StringRes resId: Int,
+    duration: Int = Toasty.LENGTH_LONG
+) {
+    show(context, toastyType, context.getString(resId), duration)
 }
 
-enum class ToastyType{
-    ERROR , INFO ,SUCCESS  , WARNING , NORMAL
+fun show(
+    context: Context,
+    toastyType: ToastyType,
+    text: String,
+    duration: Int = Toasty.LENGTH_LONG
+) {
+    when (toastyType) {
+        ToastyType.ERROR -> Toasty.error(context, text, duration, true).show()
+        ToastyType.INFO -> Toasty.info(context, text, duration, true).show()
+        ToastyType.SUCCESS -> Toasty.success(context, text, duration, true).show()
+        ToastyType.WARNING -> Toasty.warning(context, text, duration, true).show()
+        ToastyType.NORMAL -> Toasty.normal(context, text, duration).show()
+    }
+}
+
+
+fun Context.toasty(
+    @StringRes resId: Int,
+    type: ToastyType = ToastyType.NORMAL,
+    duration: Int = Toasty.LENGTH_LONG
+) = show(this, type, resId, duration)
+
+fun Context.toasty(
+    text: String,
+    type: ToastyType = ToastyType.NORMAL,
+    duration: Int = Toasty.LENGTH_LONG
+) = show(this, type, text, duration)
+
+enum class ToastyType {
+    ERROR, INFO, SUCCESS, WARNING, NORMAL
 }
