@@ -7,9 +7,10 @@ import com.rhdev.btechutils.DarkMode
 import com.rhdev.btechutils.DarkMode.changeMode
 import com.rhdev.btechutils.DarkMode.getCurrentModePosition
 import com.rhdev.btechutils.DarkMode.modesList
+import com.rhdev.btechutils.Factory
 import com.rhdev.btechutils.StoreUtils
-import com.rhdev.btechutils.ToastyType
-import com.rhdev.btechutils.toasty
+import com.rhdev.btechutils.ToastType
+import com.rhdev.btechutils.ToasterUtils
 import com.rhdev.utilslibrary.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,8 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        DarkMode.initialize(context = this@MainActivity, true)
 
         binding.apply {
 
@@ -72,27 +71,27 @@ class MainActivity : AppCompatActivity() {
                     context = this@MainActivity
                 ) { hasUpdate ->
                     if (hasUpdate) {
-                        toasty("has update", ToastyType.SUCCESS)
+                        ToasterUtils.show(text = "has update", toastyType = ToastType.SUCCESS)
                     } else {
-                        toasty("Not Update")
+                        ToasterUtils.show(text = "Not Update")
                     }
                 }
             }
 
             errorToasty.setOnClickListener {
-                toasty("This Test For Toasty" , ToastyType.ERROR )
+                ToasterUtils.show(text = "تجربة تجربة تجربة" , toastyType = ToastType.ERROR )
             }
             infoToasty.setOnClickListener {
-                toasty(R.string.app_name , ToastyType.INFO )
+                ToasterUtils.show(text = getString(R.string.app_name) , toastyType = ToastType.INFO )
             }
             normalToasty.setOnClickListener {
-                toasty("This Test For Toasty" , ToastyType.NORMAL )
+                ToasterUtils.show(text = "This Test For Toasty" , toastyType = ToastType.INFO )
             }
             warningToasty.setOnClickListener {
-                toasty(R.string.app_name , ToastyType.WARNING )
+                ToasterUtils.show(text = getString(R.string.app_name) , toastyType = ToastType.WARNING )
             }
             successToasty.setOnClickListener {
-                toasty("This Test For Toasty" , ToastyType.SUCCESS )
+                ToasterUtils.show(text = "This Test For Toasty" , toastyType = ToastType.SUCCESS )
             }
 
         }

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        gradle_version = '8.1.1'
+        gradle_version = '8.1.2'
         kotlin_version = '1.9.10'
         compose_bom_version = '2023.09.00'
         compose_compiler_version = '1.5.3'

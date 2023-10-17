@@ -15,7 +15,7 @@ object DarkMode {
 
     // ...
 
-    fun initialize(context: Context , applyTheme:Boolean) {
+    fun initialize(context: Context , applyTheme:Boolean = true) {
         appContext = context.applicationContext
         initModesList()
         if (applyTheme) {

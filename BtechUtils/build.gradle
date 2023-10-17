@@ -62,10 +62,13 @@ dependencies {
     implementation "androidx.activity:activity-compose"
     implementation "androidx.compose.material3:material3"
 
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
 
 //    Toasty
-    implementation 'com.github.GrenderG:Toasty:1.5.2'
+//    implementation 'com.github.GrenderG:Toasty:1.5.2'
+
+    // Toast framework：https://github.com/getActivity/Toaster
+    implementation 'com.github.getActivity:Toaster:12.5'
 
     //    in app review
     implementation 'com.google.android.play:review:2.0.1'

@@ -4,4 +4,6 @@
     <string name="night">Night</string>
     <string name="auto">Auto</string>
     <string name="system">System</string>
+    <string name="processing">Processing…</string>
+    <string name="cancel">Cancel</string>
 </resources>

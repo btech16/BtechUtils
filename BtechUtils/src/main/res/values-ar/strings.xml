@@ -4,4 +4,6 @@
     <string name="night">ليلي</string>
     <string name="auto">تلقائي</string>
     <string name="system">النظام</string>
+    <string name="processing">جار المعالجة…</string>
+    <string name="cancel">إلغاء</string>
 </resources>
