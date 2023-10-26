@@ -11,9 +11,9 @@ object ToasterUtils {
 
     fun show(
         text: String,
+        toastyType: ToastType = ToastType.INFO,
         duration: Int = Toast.LENGTH_SHORT,
-        gravity: Int = Gravity.BOTTOM,
-        toastyType: ToastType = ToastType.INFO
+        gravity: Int = Gravity.BOTTOM
     ) {
         val params =
             getParams(text = text, duration = duration, toastyType = toastyType, gravity = gravity)
